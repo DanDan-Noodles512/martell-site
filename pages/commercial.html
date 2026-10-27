@@ -18,6 +18,24 @@
             color: var(--text);
             line-height: 1.6;
             padding: 0 20px;
+        position: relative;
+        }
+
+        /* Parallax Background Implementation */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../images/company.JPG');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index: -1;
+            opacity: 0.15;
         }
         header { 
             display: flex; 
@@ -57,8 +75,19 @@
             justify-content: space-between;
             color: var(--gray);
         }
+
+        .rotation { max-width: 900px; margin: 0 auto 100px; text-align: center; }
+        .rot-stage img { max-width: 100%; max-height: 60vh; object-fit: contain; border-radius: 8px; display: block; margin: 0 auto; }
+        .rot-counter { color: var(--gray); margin-top: 8px; }
+        .rot-controls { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+        .rot-controls button { font-size: 1rem; padding: 10px 18px; cursor: pointer; background: #111; color: var(--text); border: 1px solid #333; border-radius: 8px; }
         .menu-btn { display: none; background: none; border: 0; color: var(--text); font-size: 1.8rem; cursor: pointer; line-height: 1; }
         @media (max-width: 768px) {
+            body::before {
+                background-attachment: scroll;
+                background-size: 100% auto;
+                background-position: center top;
+            }
             .menu-btn { display: block; }
             nav {
                 display: none;
@@ -90,12 +119,23 @@
     </header>
 
     <main class="hero">
-        <h1>Commercial<span class="accent">.</span></h1>
+        <h1>Commercial</h1>
     </main>
     
     <section class="content-section">
         <p>Full-scale electrical implementation for commercial spaces with safety as the top priority. We manage everything from new construction wiring to heavy-duty equipment installations.</p>
     </section>
+    <section class="rotation">
+        <div class="rot-stage"><img id="rot-photo" alt="Electrical work"></div>
+        <div class="rot-counter" id="rot-counter"></div>
+        <div class="rot-controls">
+            <button id="rot-prev" type="button">← Prev</button>
+            <button id="rot-pause" type="button">⏸ Pause</button>
+            <button id="rot-next" type="button">Next →</button>
+            <button id="rot-shuffle" type="button">Shuffle</button>
+        </div>
+    </section>
+
 
     <footer>
         <div>
@@ -124,6 +164,52 @@
         btn.textContent = '☰';
       });
     });
+  })();
+</script>
+
+<script>
+  (function () {
+    var IMAGES = [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Electrician_Working.jpg/1280px-Electrician_Working.jpg",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Loose_wiring.jpg/1280px-Loose_wiring.jpg",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/Seabees_Install_Street_Lights_%285095072%29.jpg/1280px-Seabees_Install_Street_Lights_%285095072%29.jpg",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Seabees_Install_Street_Lights_%285095074%29.jpg/1280px-Seabees_Install_Street_Lights_%285095074%29.jpg",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Loughborough_University_Library_05_Level_4_August_2012_-_view_of_the_main_electrical_distribution_board_%288345859802%29.jpg/1280px-Loughborough_University_Library_05_Level_4_August_2012_-_view_of_the_main_electrical_distribution_board_%288345859802%29.jpg",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/US_Navy_090609-N-2128R-023_Construction_Electrician_1st_Class_Alan_Cole_and_Construction_Electrician_3rd_Class_Kevin_Latimer_install_exterior_lights_at_Camp_Moreell%2C_Kuwait.jpg/1280px-thumbnail.jpg"
+    ];
+    function shuffled(list) {
+      var arr = list.slice();
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+      }
+      return arr;
+    }
+    var urls = shuffled(IMAGES);
+    var index = 0, timer = null, paused = false;
+    var photo = document.getElementById('rot-photo');
+    var counter = document.getElementById('rot-counter');
+    var pauseBtn = document.getElementById('rot-pause');
+    function show(i) {
+      index = (i + urls.length) % urls.length;
+      photo.src = urls[index];
+      counter.textContent = (index + 1) + ' of ' + urls.length;
+    }
+    function restartTimer() {
+      if (timer) clearInterval(timer);
+      timer = paused ? null : setInterval(function () { show(index + 1); }, 4000);
+    }
+    document.getElementById('rot-prev').addEventListener('click', function () { show(index - 1); restartTimer(); });
+    document.getElementById('rot-next').addEventListener('click', function () { show(index + 1); restartTimer(); });
+    pauseBtn.addEventListener('click', function () {
+      paused = !paused;
+      pauseBtn.textContent = paused ? '\u25b6 Play' : '\u23f8 Pause';
+      restartTimer();
+    });
+    document.getElementById('rot-shuffle').addEventListener('click', function () {
+      urls = shuffled(urls); show(0); restartTimer();
+    });
+    show(0); restartTimer();
   })();
 </script>
 </body>

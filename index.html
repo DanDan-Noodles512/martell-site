@@ -100,6 +100,11 @@
 
         .menu-btn { display: none; background: none; border: 0; color: var(--text); font-size: 1.8rem; cursor: pointer; line-height: 1; }
         @media (max-width: 768px) {
+            body::before {
+                background-attachment: scroll;
+                background-size: 100% auto;
+                background-position: center top;
+            }
             .menu-btn { display: block; }
             nav {
                 display: none;
