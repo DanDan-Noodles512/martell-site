@@ -76,6 +76,22 @@
             margin-top: 30px;
         }
 
+
+        button.cta-btn { border: 0; cursor: pointer; font-family: inherit; font-size: inherit; }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.open { display: flex; }
+        .modal { background: #111; border: 1px solid #333; border-radius: 12px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative; text-align: left; }
+        .modal h2 { margin-bottom: 8px; font-size: 1.6rem; }
+        .modal p.sub { color: var(--gray); margin-bottom: 8px; font-size: 0.95rem; }
+        .modal label { display: block; font-size: 0.9rem; font-weight: 600; margin: 14px 0 6px; }
+        .modal input, .modal select, .modal textarea { width: 100%; padding: 12px; background: #0a0a0a; border: 1px solid #333; border-radius: 8px; color: var(--text); font-family: inherit; font-size: 1rem; }
+        .modal textarea { min-height: 100px; resize: vertical; }
+        .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: 0; color: var(--gray); font-size: 1.5rem; cursor: pointer; line-height: 1; }
+        .modal-submit { width: 100%; margin-top: 20px; background: var(--accent); color: #000; border: 0; padding: 14px; font-family: inherit; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; cursor: pointer; }
+        .modal-thanks { display: none; text-align: center; padding: 20px 0 10px; }
+        .modal-thanks.show { display: block; }
+
         .grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
@@ -140,7 +156,7 @@
     <main class="hero">
         <h1>Professional Electrical Solutions.</h1>
         <p>Reliable expertise for your next project. Serving your infrastructure with precision.</p>
-        <a href="mailto:info@jgielectrical.com" class="cta-btn">Book a Project</a>
+        <button type="button" class="cta-btn" id="book-btn">Book a Project</button>
     </main>
 
     <section class="grid">
@@ -168,6 +184,36 @@
     </footer>
 
 
+
+<div class="modal-overlay" id="book-modal" role="dialog" aria-modal="true" aria-labelledby="book-title">
+  <div class="modal">
+    <button class="modal-close" id="book-close" aria-label="Close">✕</button>
+    <form id="book-form">
+      <h2 id="book-title">Book a Project</h2>
+      <p class="sub">Tell us about your project and we'll get back to you.</p>
+      <label for="bk-name">Name *</label>
+      <input id="bk-name" type="text" required autocomplete="name">
+      <label for="bk-phone">Phone</label>
+      <input id="bk-phone" type="tel" autocomplete="tel">
+      <label for="bk-email">Email *</label>
+      <input id="bk-email" type="email" required autocomplete="email">
+      <label for="bk-type">Project type</label>
+      <select id="bk-type">
+        <option>Commercial</option>
+        <option>Maintenance &amp; Repair</option>
+        <option>Other</option>
+      </select>
+      <label for="bk-details">Project details *</label>
+      <textarea id="bk-details" required></textarea>
+      <button class="modal-submit" type="submit">Send booking request</button>
+    </form>
+    <div class="modal-thanks" id="book-thanks">
+      <h2>Thanks!</h2>
+      <p id="book-thanks-text"></p>
+    </div>
+  </div>
+</div>
+
 <script>
   (function () {
     var btn = document.querySelector('.menu-btn');
@@ -183,6 +229,64 @@
         btn.setAttribute('aria-expanded', 'false');
         btn.textContent = '☰';
       });
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    var overlay = document.getElementById('book-modal');
+    var openBtn = document.getElementById('book-btn');
+    var closeBtn = document.getElementById('book-close');
+    var form = document.getElementById('book-form');
+    var thanks = document.getElementById('book-thanks');
+    var thanksText = document.getElementById('book-thanks-text');
+    // GOOGLE FORM CONNECTION: filled in once DR shares the form link.
+    // GOOGLE_FORM_ID is the ID from the form's URL; ENTRY maps each field
+    // to its entry number from the form's pre-filled link. Left empty for now.
+    var GOOGLE_FORM_ID = '';
+    var ENTRY = { name: '', phone: '', email: '', type: '', details: '' };
+    function openModal() {
+      form.reset();
+      form.style.display = '';
+      thanks.classList.remove('show');
+      overlay.classList.add('open');
+      document.getElementById('bk-name').focus();
+    }
+    function closeModal() { overlay.classList.remove('open'); }
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = {
+        name: document.getElementById('bk-name').value.trim(),
+        phone: document.getElementById('bk-phone').value.trim(),
+        email: document.getElementById('bk-email').value.trim(),
+        type: document.getElementById('bk-type').value,
+        details: document.getElementById('bk-details').value.trim()
+      };
+      var connected = GOOGLE_FORM_ID && ENTRY.name;
+      if (connected) {
+        var body = new URLSearchParams();
+        body.set(ENTRY.name, data.name);
+        body.set(ENTRY.phone, data.phone);
+        body.set(ENTRY.email, data.email);
+        body.set(ENTRY.type, data.type);
+        body.set(ENTRY.details, data.details);
+        fetch('https://docs.google.com/forms/d/e/' + GOOGLE_FORM_ID + '/formResponse', { method: 'POST', mode: 'no-cors', body: body });
+        thanksText.textContent = 'Your booking request has been sent. We will be in touch soon.';
+      } else {
+        // Interim fallback until the Google Form is connected: open a
+        // prefilled email so no enquiry is lost.
+        var subject = encodeURIComponent('New project booking: ' + data.type);
+        var text = encodeURIComponent('Name: ' + data.name + '\nPhone: ' + data.phone + '\nEmail: ' + data.email + '\nProject type: ' + data.type + '\n\nDetails:\n' + data.details);
+        window.location.href = 'mailto:info@jgielectrical.com?subject=' + subject + '&body=' + text;
+        thanksText.textContent = 'Your email app should have opened with the details filled in. Just hit Send and we will be in touch soon.';
+      }
+      form.style.display = 'none';
+      thanks.classList.add('show');
     });
   })();
 </script>
