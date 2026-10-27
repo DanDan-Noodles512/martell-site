@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - JG & I Electrical Contractors LLC</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --text: #f4f4f4;
+            --accent: #ffcc00;
+            --gray: #888;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0 20px;
+        }
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 40px 0; 
+            max-width: 1200px; 
+            margin: auto; 
+        }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; text-decoration: none; color: var(--text); }
+        .logo span { color: var(--accent); }
+        nav a { color: var(--text); text-decoration: none; margin-left: 20px; font-size: 0.9rem; font-weight: 500; }
+        .hero { 
+            max-width: 1200px; 
+            margin: 60px auto; 
+            text-align: center; 
+        }
+        h1 { font-size: clamp(3rem, 8vw, 6rem); line-height: 0.9; margin-bottom: 20px; }
+        .accent { color: var(--accent); }
+        .content-section {
+            max-width: 800px;
+            margin: 40px auto 100px;
+            text-align: center;
+        }
+        .content-section p {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        footer { 
+            max-width: 1200px; 
+            margin: 100px auto 40px; 
+            border-top: 1px solid #333; 
+            padding-top: 40px; 
+            display: flex; 
+            justify-content: space-between;
+            color: var(--gray);
+        }
+        @media (max-width: 768px) {
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../index.html" class="logo">JG & I<span class="accent">.</span></a>
+        <nav>
+            <a href="commercial.html">Commercial</a>
+            <a href="services.html">Services</a>
+            <a href="about.html">About</a>
+            <a href="conatct.html">Contact</a>
+        </nav>
+    </header>
+
+    <main class="hero">
+        <h1>About Us<span class="accent">.</span></h1>
+    </main>
+    
+    <section class="content-section">
+        <p>JG & I Electrical Contractors LLC brings years of reliable expertise to your next project. We are dedicated to serving your infrastructure with precision, safety, and modern techniques.</p>
+    </section>
+
+    <footer>
+        <div>
+            <p><strong>JG & I Electrical Contractors LLC</strong></p>
+            <p>Professional licensed contractors.</p>
+        </div>
+        <div>
+            <p>Contact: <a href="mailto:info@jgielectrical.com" style="color:var(--accent)">info@jgielectrical.com</a></p>
+            <p>&copy; 2024 All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

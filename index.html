@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JG & I Electrical Contractors LLC</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --text: #f4f4f4;
+            --accent: #ffcc00;
+            --gray: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        /* Parallax Background Implementation */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background-image: url('images/company.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index: -1;
+            opacity: 0.15; /* Keeps the dark theme intact and text readable */
+        }
+
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 40px 0; 
+            max-width: 1200px; 
+            margin: auto; 
+        }
+
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
+
+        nav a { color: var(--text); text-decoration: none; margin-left: 20px; font-size: 0.9rem; font-weight: 500; }
+
+        .hero { 
+            max-width: 1200px; 
+            margin: 60px auto; 
+            text-align: center; 
+        }
+
+        h1 { font-size: clamp(3rem, 8vw, 6rem); line-height: 0.9; margin-bottom: 20px; }
+        .accent { color: var(--accent); }
+
+        .cta-btn { 
+            display: inline-block; 
+            background: var(--accent); 
+            color: #000; 
+            padding: 15px 40px; 
+            text-decoration: none; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            margin-top: 30px;
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 40px; 
+            max-width: 1200px; 
+            margin: 100px auto; 
+        }
+
+        .card img { width: 100%; height: 300px; object-fit: cover; filter: grayscale(50%); transition: 0.3s; }
+        .card img:hover { filter: grayscale(0%); }
+        .card h3 { margin: 20px 0 10px; font-size: 1.5rem; }
+
+        footer { 
+            max-width: 1200px; 
+            margin: 100px auto 40px; 
+            border-top: 1px solid #333; 
+            padding-top: 40px; 
+            display: flex; 
+            justify-content: space-between;
+            color: var(--gray);
+        }
+
+        @media (max-width: 768px) {
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">JG & I<span class="accent">.</span></div>
+        <nav>
+            <a href="pages/commercial.html">Commercial</a>
+            <a href="pages/services.html">Services</a>
+            <a href="pages/about.html">About</a>
+            <a href="pages/conatct.html">Contact</a>
+        </nav>
+    </header>
+
+    <main class="hero">
+        <h1>Professional Electrical <span class="accent">Solutions.</span></h1>
+        <p>Reliable expertise for your next project. Serving your infrastructure with precision.</p>
+        <a href="mailto:info@jgielectrical.com" class="cta-btn">Book a Project</a>
+    </main>
+
+    <section class="grid">
+        <div class="card">
+            <img src="images/commercial.jpeg" alt="Electrical wiring installation">
+            <h3>Commercial Wiring</h3>
+            <p>Full-scale electrical implementation for commercial spaces with safety as the top priority.</p>
+        </div>
+        <div class="card">
+            <img src="images/maintenance.jpeg" alt="Maintenance and repair">
+            <h3>Maintenance & Repair</h3>
+            <p>Don't let downtime affect your business. We provide rapid diagnostic and repair services.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div>
+            <p><strong>JG & I Electrical Contractors LLC</strong></p>
+            <p>Professional licensed contractors.</p>
+        </div>
+        <div>
+            <p>Contact: <a href="mailto:info@jgielectrical.com" style="color:var(--accent)">info@jgielectrical.com</a></p>
+            <p>© 2024 All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
